@@ -28,4 +28,11 @@ public class Caller extends UserImp {
     public void setClubId(String clubId) {
         this.clubId = clubId;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nCaller{" +
+                "clubId='" + clubId + '\'' +
+                '}';
+    }
 }

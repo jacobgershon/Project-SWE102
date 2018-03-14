@@ -1,38 +1,44 @@
 package com.example.hongsonpham.firstgreeting.controller.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.hongsonpham.firstgreeting.R;
-import com.example.hongsonpham.firstgreeting.model.entity.user.Caller;
-import com.example.hongsonpham.firstgreeting.model.entity.user.FbUser;
-import com.example.hongsonpham.firstgreeting.model.entity.user.User;
-import com.example.hongsonpham.firstgreeting.model.entity.user.UserImp;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
+import com.example.hongsonpham.firstgreeting.controller.extended_services.FirebaseAPI;
+import com.facebook.login.LoginManager;
 
 public class MainActivity extends AppCompatActivity {
+
+    FirebaseAPI firebaseAPI;
+    FacebookAPI facebookAPI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user");
+        firebaseAPI = new FirebaseAPI();
+        facebookAPI = new FacebookAPI();
 
-//        myRef.setValue("Hello, World!");
+//        firebaseAPI.demo();
 
-        User user = new UserImp("0012", "Pham Hong Son", "link");
+        LoginManager.getInstance().logOut();
+        if (facebookAPI.isLoginAlready()) {
+            Log.e("test: ", "Da login");
+            facebookAPI.loadImformation();
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            startActivity(intent);
+        } else {
+            Log.e("test: ", "Chua login");
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
 
-        User fbUser = new FbUser(user, "20/07/1997", "hongsongp97@gmail.com", "Male");
-
-        User caller = new Caller(user, "JS");
-
-        System.out.println(fbUser);
-        System.out.println(caller);
-
-        myRef.child("FbUser").setValue(fbUser);
-        myRef.child("Caller").setValue(caller);
     }
+
+
+
 }
