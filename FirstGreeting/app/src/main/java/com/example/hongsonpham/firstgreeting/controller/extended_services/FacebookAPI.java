@@ -8,12 +8,8 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
-import com.facebook.GraphRequestAsyncTask;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
-import com.facebook.LoggingBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
@@ -54,13 +50,66 @@ public class FacebookAPI {
     }
 
     public void loadImformation() {
-        Bundle params = new Bundle();
-        params.putString("fields", "id,name,picture.role(large),cover");
-        GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(AccessToken.getCurrentAccessToken(), "me", params, HttpMethod.GET,
-                new GraphRequest.Callback() {
+//        Bundle params = new Bundle();
+//        params.putString("fields", "id,name,picture.width(960),cover)");
+//        GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(AccessToken.getCurrentAccessToken(), "me", params, HttpMethod.GET,
+//                new GraphRequest.Callback() {
+//                    @Override
+//                    public void onCompleted(GraphResponse response) {
+//                        //Declare variables
+//                        String fbId = "";
+//                        String fbName = "";
+//                        String fbAvatar = "";
+//                        String fbCover = "";
+//                        String fbDOB = "";
+//                        String email = "";
+//                        String gender = "";
+//
+//                        if (response != null) {
+//                            String userDetail = response.getRawResponse();
+//                            FacebookSdk.addLoggingBehavior(LoggingBehavior.REQUESTS);
+//                            try {
+//                                JSONObject jsonObject = new JSONObject(userDetail);
+//                                Log.e("object", jsonObject.toString());
+//
+//                                if (jsonObject.has("id")) {
+//                                    fbId = jsonObject.getString("id");
+//                                }
+//
+//                                if (jsonObject.has("name")) {
+//                                    fbName = jsonObject.getString("name");
+//                                }
+//
+//                                if (jsonObject.has("picture")) {
+//                                    fbAvatar = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
+//                                }
+//
+//                                if (jsonObject.has("cover")) {
+//                                    fbCover = jsonObject.getJSONObject("cover").getString("source");
+//                                }
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            } catch (Exception e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                        FbUser fbUser = new FbUser(fbId, fbName, fbAvatar, fbCover, fbDOB, email, gender);
+//                        Log.e("test: ", "Loaded");
+//                        firebaseAPI.pushFbUser(fbUser);
+//                        moveToHome();
+//                    }
+//                }).executeAsync();
+
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
                     @Override
-                    public void onCompleted(GraphResponse response) {
-                        //De
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        // Application code
+                        //Declare variables
                         String fbId = "";
                         String fbName = "";
                         String fbAvatar = "";
@@ -69,44 +118,56 @@ public class FacebookAPI {
                         String email = "";
                         String gender = "";
 
-                        if (response != null) {
-                            String userDetail = response.getRawResponse();
-                            FacebookSdk.addLoggingBehavior(LoggingBehavior.REQUESTS);
+                        if (object != null) {
                             try {
-                                JSONObject jsonObject = new JSONObject(userDetail);
-                                Log.e("object", jsonObject.toString());
-                                fbId = jsonObject.getString("id");
-                                fbName = jsonObject.getString("name");
+                                Log.e("object", object.toString());
 
-                                fbAvatar = "https://graph.facebook.com/" + fbId + "/picture?width=960&height=960";
-                                if (jsonObject.has("cover")) {
-                                    String getInitialCover = jsonObject.getString("cover");
-
-                                    if (getInitialCover.equals("null")) {
-                                        jsonObject = null;
-                                    } else {
-                                        JSONObject JOCover = jsonObject.optJSONObject("cover");
-                                        if (JOCover.has("source")) {
-                                            JOCover.getString("source");
-                                        } else {
-                                            fbCover = null;
-                                        }
-                                    }
-                                } else {
-                                    fbCover = null;
+                                if (object.has("id")) {
+                                    fbId = object.getString("id");
                                 }
+
+                                if (object.has("name")) {
+                                    fbName = object.getString("name");
+                                }
+
+                                if (object.has("picture")) {
+                                    fbAvatar = object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                }
+
+                                if (object.has("cover")) {
+                                    fbCover = object.getJSONObject("cover").getString("source");
+                                }
+
+                                if (object.has("birthday")) {
+                                    fbDOB = object.getString("birthday");
+                                }
+
+                                if (object.has("email")) {
+                                    email = object.getString("email");
+                                }
+
+                                if (object.has("gender")) {
+                                    gender = object.getString("gender");
+                                }
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                        } else {
+                            Log.e("test: ", "jsonObject is Null");
                         }
                         FbUser fbUser = new FbUser(fbId, fbName, fbAvatar, fbCover, fbDOB, email, gender);
                         Log.e("test: ", "Loaded");
                         firebaseAPI.pushFbUser(fbUser);
                         moveToHome();
                     }
-                }).executeAsync();
+                });
+        Bundle parammeters = new Bundle();
+        parammeters.putString("fields", "id,name,picture.width(960).heigh(960),cover,birthday,email,gender");
+        request.setParameters(parammeters);
+        request.executeAsync();
     }
 
     public void processLogin() {

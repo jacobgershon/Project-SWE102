@@ -8,7 +8,10 @@ import com.example.hongsonpham.firstgreeting.R;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FirebaseAPI;
 import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.widget.LoginButton;
+
+import java.util.Arrays;
 
 /**
  * Created by HongSonPham on 3/14/18.
@@ -25,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
 
         firebaseAPI = new FirebaseAPI();
         facebookAPI = new FacebookAPI() {
@@ -35,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         };
         btnLoginFacebook = findViewById(R.id.login_button);
+        btnLoginFacebook.setReadPermissions(Arrays.asList("email", "public_profile", "user_birthday"));
 
         facebookAPI.processLogin();
     }
