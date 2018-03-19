@@ -3,7 +3,6 @@ package com.example.hongsonpham.firstgreeting.controller.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.example.hongsonpham.firstgreeting.R;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
@@ -21,24 +20,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         firebaseAPI = new FirebaseAPI();
-        facebookAPI = new FacebookAPI();
+        facebookAPI = new FacebookAPI() {
+            @Override
+            public void moveToHome() {};
+        };
 
 //        firebaseAPI.demo();
+        loginToApp();
 
+    }
+
+    public void loginToApp() {
         LoginManager.getInstance().logOut();
         if (facebookAPI.isLoginAlready()) {
-            Log.e("test: ", "Da login");
             facebookAPI.loadImformation();
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
         } else {
-            Log.e("test: ", "Chua login");
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
-
     }
-
-
 
 }

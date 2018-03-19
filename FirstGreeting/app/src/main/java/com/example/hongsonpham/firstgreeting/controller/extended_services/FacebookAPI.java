@@ -20,7 +20,7 @@ import org.json.JSONObject;
  * Created by HongSonPham on 3/14/18.
  */
 
-public class FacebookAPI {
+public abstract class FacebookAPI {
     private CallbackManager callbackManager;
     FirebaseAPI firebaseAPI;
 
@@ -50,56 +50,6 @@ public class FacebookAPI {
     }
 
     public void loadImformation() {
-//        Bundle params = new Bundle();
-//        params.putString("fields", "id,name,picture.width(960),cover)");
-//        GraphRequestAsyncTask graphRequestAsyncTask = new GraphRequest(AccessToken.getCurrentAccessToken(), "me", params, HttpMethod.GET,
-//                new GraphRequest.Callback() {
-//                    @Override
-//                    public void onCompleted(GraphResponse response) {
-//                        //Declare variables
-//                        String fbId = "";
-//                        String fbName = "";
-//                        String fbAvatar = "";
-//                        String fbCover = "";
-//                        String fbDOB = "";
-//                        String email = "";
-//                        String gender = "";
-//
-//                        if (response != null) {
-//                            String userDetail = response.getRawResponse();
-//                            FacebookSdk.addLoggingBehavior(LoggingBehavior.REQUESTS);
-//                            try {
-//                                JSONObject jsonObject = new JSONObject(userDetail);
-//                                Log.e("object", jsonObject.toString());
-//
-//                                if (jsonObject.has("id")) {
-//                                    fbId = jsonObject.getString("id");
-//                                }
-//
-//                                if (jsonObject.has("name")) {
-//                                    fbName = jsonObject.getString("name");
-//                                }
-//
-//                                if (jsonObject.has("picture")) {
-//                                    fbAvatar = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
-//                                }
-//
-//                                if (jsonObject.has("cover")) {
-//                                    fbCover = jsonObject.getJSONObject("cover").getString("source");
-//                                }
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                        FbUser fbUser = new FbUser(fbId, fbName, fbAvatar, fbCover, fbDOB, email, gender);
-//                        Log.e("test: ", "Loaded");
-//                        firebaseAPI.pushFbUser(fbUser);
-//                        moveToHome();
-//                    }
-//                }).executeAsync();
 
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
@@ -120,7 +70,7 @@ public class FacebookAPI {
 
                         if (object != null) {
                             try {
-                                Log.e("object", object.toString());
+//                                Log.e("object", object.toString());
 
                                 if (object.has("id")) {
                                     fbId = object.getString("id");
@@ -159,7 +109,6 @@ public class FacebookAPI {
                             Log.e("test: ", "jsonObject is Null");
                         }
                         FbUser fbUser = new FbUser(fbId, fbName, fbAvatar, fbCover, fbDOB, email, gender);
-                        Log.e("test: ", "Loaded");
                         firebaseAPI.pushFbUser(fbUser);
                         moveToHome();
                     }
@@ -171,7 +120,6 @@ public class FacebookAPI {
     }
 
     public void processLogin() {
-        Log.e("test: ", "Dang login");
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -193,7 +141,5 @@ public class FacebookAPI {
                 });
     }
 
-    public void moveToHome() {
-
-    }
+    public abstract void moveToHome();
 }

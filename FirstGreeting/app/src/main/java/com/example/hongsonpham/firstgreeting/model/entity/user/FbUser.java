@@ -10,6 +10,10 @@ public class FbUser extends UserImp {
     private String userEmail;
     private String userGender;
 
+    public FbUser() {
+
+    };
+
     public FbUser(String userId, String userName, String userAvatar, String userCover, String userDOB, String userEmail, String userGender) {
         super(userId, userName, userAvatar);
         this.userCover = userCover;

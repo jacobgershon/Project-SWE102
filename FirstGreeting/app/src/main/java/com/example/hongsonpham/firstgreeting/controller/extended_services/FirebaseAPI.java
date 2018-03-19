@@ -27,14 +27,33 @@ public class FirebaseAPI {
         myRef = FirebaseDatabase.getInstance().getReference();
     }
 
+    public DatabaseReference getMyRef() {
+        return myRef;
+    }
+
+
     public void pushFbUser(final FbUser user) {
         myRef.child("user-node").child("FbUser").child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())  {
+                myRef.child("user-node").child("FbUser").child(user.getUserId()).setValue(user);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void pushCaller(final Caller user) {
+        myRef.child("user-node").child("Caller").child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
 
                 } else {
-                    myRef.child("user-node").child("FbUser").child(user.getUserId()).setValue(user);
+                    myRef.child("user-node").child("Caller").child(user.getUserId()).setValue(user);
                 }
             }
 
@@ -45,7 +64,12 @@ public class FirebaseAPI {
         });
     }
 
-    public void postStatus(final Status status) {
+    public void pushACaller(User user) {
+        Caller caller = new Caller(user, "none");
+        pushCaller(caller);
+    }
+
+    public void pushStatus(final Status status) {
         myRef.child("paragraph-node").child("Status").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -60,21 +84,21 @@ public class FirebaseAPI {
         });
     }
 
-    public void postComment(final String statusId, final Comment comment) {
+    public void pushComment(final String statusId, final Comment comment) {
         myRef.child("paragraph-node").child("Status").child(statusId).child("commentList")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                long commentCount = dataSnapshot.getChildrenCount();
-                myRef.child("paragraph-node").child("Status").child(statusId).child("commentList")
-                        .child(Long.toString(commentCount)).setValue(comment);
-            }
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        long commentCount = dataSnapshot.getChildrenCount();
+                        myRef.child("paragraph-node").child("Status").child(statusId).child("commentList")
+                                .child(Long.toString(commentCount)).setValue(comment);
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
     }
 
     public void demo() {
@@ -88,12 +112,12 @@ public class FirebaseAPI {
 
         Paragraph aComment = new Comment(user, "ngonngon", ServerValue.TIMESTAMP);
         ArrayList<Comment> commentList = new ArrayList<>();
-        commentList.add((Comment)aComment);
+        commentList.add((Comment) aComment);
         Paragraph aStatus = new Status(user, "This's a status", ServerValue.TIMESTAMP, commentList, new ArrayList<User>());
 
         ArrayList<Status> statusList = new ArrayList<>();
         statusList.add((Status) aStatus);
 //        this.postStatus((Status) aStatus);
-        this.postComment("1", (Comment) aComment);
+        this.pushComment("1", (Comment) aComment);
     }
 }

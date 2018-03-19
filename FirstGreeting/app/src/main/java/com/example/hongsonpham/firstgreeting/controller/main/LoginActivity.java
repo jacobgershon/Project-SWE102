@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.hongsonpham.firstgreeting.R;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FirebaseAPI;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
@@ -26,9 +24,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
 
         firebaseAPI = new FirebaseAPI();
         facebookAPI = new FacebookAPI() {
