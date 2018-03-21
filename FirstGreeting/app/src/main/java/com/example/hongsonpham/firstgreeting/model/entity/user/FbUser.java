@@ -1,9 +1,16 @@
 package com.example.hongsonpham.firstgreeting.model.entity.user;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by HongSonPham on 3/13/18.
  */
 
+@IgnoreExtraProperties
 public class FbUser extends UserImp {
     private String userCover;
     private String userDOB;
@@ -69,5 +76,18 @@ public class FbUser extends UserImp {
                 ", userEmail='" + userEmail + '\'' +
                 ", userGender='" + userGender + '\'' +
                 '}';
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("userId", userId);
+        result.put("userName", userName);
+        result.put("userAvatar", userAvatar);
+        result.put("userCover", userCover);
+        result.put("userDOB", userDOB);
+        result.put("userGender", userGender);
+
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:background="@color/com_facebook_button_login_silver_background_color"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -12,7 +13,7 @@
         android:layout_marginTop="10dp"
         android:paddingTop="5dp"
         android:orientation="vertical"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:background="@drawable/custom_border_status">
 
         <RelativeLayout
             android:layout_marginTop="5dp"
@@ -104,7 +105,7 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/tvLikedNumber"
+                        android:id="@+id/tvCommentedNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="50dp"

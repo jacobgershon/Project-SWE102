@@ -5,6 +5,7 @@ package com.example.hongsonpham.firstgreeting.model.entity.user;
  */
 
 public interface User {
+
     public String getUserId();
 
     public void setUserId(String userId);

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.example.hongsonpham.firstgreeting.R;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FirebaseAPI;
-import com.facebook.login.LoginManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,13 +24,13 @@ public class MainActivity extends AppCompatActivity {
             public void moveToHome() {};
         };
 
-//        firebaseAPI.demo();
+        firebaseAPI.demo();
         loginToApp();
 
     }
 
     public void loginToApp() {
-        LoginManager.getInstance().logOut();
+//        LoginManager.getInstance().logOut();
         if (facebookAPI.isLoginAlready()) {
             facebookAPI.loadImformation();
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);

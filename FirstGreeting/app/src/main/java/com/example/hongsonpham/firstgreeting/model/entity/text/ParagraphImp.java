@@ -1,22 +1,42 @@
 package com.example.hongsonpham.firstgreeting.model.entity.text;
 
-import com.example.hongsonpham.firstgreeting.model.entity.user.User;
-
-import java.util.Map;
+import com.example.hongsonpham.firstgreeting.model.entity.user.UserImp;
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 /**
  * Created by HongSonPham on 3/13/18.
  */
 
+@IgnoreExtraProperties
 public class ParagraphImp implements Paragraph {
-    private User owner;
+    private String paragraphId;
+    private UserImp owner;
     private String content;
-    private Map<String, String> timestamp;
+    private Object timestamp;
 
-    public ParagraphImp(User owner, String content, Map<String, String> timestamp) {
+    public ParagraphImp() {
+
+    }
+
+    public ParagraphImp(UserImp owner, String content, Object timestamp) {
         this.owner = owner;
         this.content = content;
         this.timestamp = timestamp;
+    }
+
+    public ParagraphImp(String userId, String userName, String userAvatar, String content, Object timestamp) {
+        this.owner = new UserImp(userId, userName, userAvatar);
+        this.content = content;
+        this.timestamp = timestamp;
+    }
+
+    public String getParagraphId() {
+        return paragraphId;
+    }
+
+    public void setParagraphId(String paragraphId) {
+        this.paragraphId = paragraphId;
     }
 
     public String getContent() {
@@ -28,19 +48,25 @@ public class ParagraphImp implements Paragraph {
     }
 
     @Override
-    public Map<String, String> getTimestamp() {
+    public Object getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Map<String, String> timestamp) {
+    public void setTimestamp(Object timestamp) {
         this.timestamp = timestamp;
     }
 
-    public User getOwner() {
+    @Exclude
+    public Long getTimestamp(boolean isLong) {
+        if (timestamp instanceof Long) return (Long) timestamp;
+        else return null;
+    }
+
+    public UserImp getOwner() {
         return owner;
     }
 
-    public void setOwner(User owner) {
+    public void setOwner(UserImp owner) {
         this.owner = owner;
     }
 

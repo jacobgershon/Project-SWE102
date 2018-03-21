@@ -1,9 +1,12 @@
 package com.example.hongsonpham.firstgreeting.model.entity.user;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * Created by HongSonPham on 3/13/18.
  */
 
+@IgnoreExtraProperties
 public class Caller extends UserImp {
     private String clubId;
 

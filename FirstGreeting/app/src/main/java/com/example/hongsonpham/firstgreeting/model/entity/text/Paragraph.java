@@ -1,26 +1,27 @@
 package com.example.hongsonpham.firstgreeting.model.entity.text;
 
-import com.example.hongsonpham.firstgreeting.model.entity.user.User;
-
-import java.util.Map;
+import com.example.hongsonpham.firstgreeting.model.entity.user.UserImp;
 
 /**
  * Created by HongSonPham on 3/13/18.
  */
 
 public interface Paragraph {
+    public String getParagraphId();
+
+    public void setParagraphId(String paragraphId);
 
     public String getContent();
 
     public void setContent(String content);
 
-    public Map<String, String> getTimestamp();
+    public Object getTimestamp();
 
-    public void setTimestamp(Map<String, String> timestamp);
+    public void setTimestamp(Object timestamp);
 
-    public User getOwner();
+    public UserImp getOwner();
 
-    public void setOwner(User owner);
+    public void setOwner(UserImp owner);
 
     @Override
     public String toString();

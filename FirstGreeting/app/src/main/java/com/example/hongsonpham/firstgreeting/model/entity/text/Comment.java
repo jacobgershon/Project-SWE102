@@ -1,8 +1,6 @@
 package com.example.hongsonpham.firstgreeting.model.entity.text;
 
-import com.example.hongsonpham.firstgreeting.model.entity.user.User;
-
-import java.util.Map;
+import com.example.hongsonpham.firstgreeting.model.entity.user.UserImp;
 
 /**
  * Created by HongSonPham on 3/13/18.
@@ -10,7 +8,10 @@ import java.util.Map;
 
 public class Comment extends ParagraphImp {
 
-    public Comment(User owner, String content, Map<String, String> timestamp) {
+    public Comment() {
+    }
+
+    public Comment(UserImp owner, String content, Object timestamp) {
         super(owner, content, timestamp);
     }
 

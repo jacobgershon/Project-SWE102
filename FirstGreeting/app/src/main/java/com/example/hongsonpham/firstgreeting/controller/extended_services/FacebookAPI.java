@@ -23,6 +23,7 @@ import org.json.JSONObject;
 public abstract class FacebookAPI {
     private CallbackManager callbackManager;
     FirebaseAPI firebaseAPI;
+    public static String fbId;
 
     public FacebookAPI() {
         callbackManager = CallbackManager.Factory.create();
@@ -31,18 +32,6 @@ public abstract class FacebookAPI {
 
     public CallbackManager getCallbackManager() {
         return callbackManager;
-    }
-
-    public void setCallbackManager(CallbackManager callbackManager) {
-        this.callbackManager = callbackManager;
-    }
-
-    public FirebaseAPI getFirebaseAPI() {
-        return firebaseAPI;
-    }
-
-    public void setFirebaseAPI(FirebaseAPI firebaseAPI) {
-        this.firebaseAPI = firebaseAPI;
     }
 
     public boolean isLoginAlready() {
@@ -58,9 +47,7 @@ public abstract class FacebookAPI {
                     public void onCompleted(
                             JSONObject object,
                             GraphResponse response) {
-                        // Application code
                         //Declare variables
-                        String fbId = "";
                         String fbName = "";
                         String fbAvatar = "";
                         String fbCover = "";
@@ -114,7 +101,7 @@ public abstract class FacebookAPI {
                     }
                 });
         Bundle parammeters = new Bundle();
-        parammeters.putString("fields", "id,name,picture.width(960).heigh(960),cover,birthday,email,gender");
+        parammeters.putString("fields", "id,name,picture.width(400).heigh(400),cover,birthday,email,gender");
         request.setParameters(parammeters);
         request.executeAsync();
     }

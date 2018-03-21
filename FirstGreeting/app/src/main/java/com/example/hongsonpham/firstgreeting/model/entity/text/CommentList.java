@@ -8,44 +8,43 @@ import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 
 /**
- * Created by HongSonPham on 3/19/18.
+ * Created by HongSonPham on 3/20/18.
  */
 
-public abstract class StatusList extends ArrayList<Status> {
-
+public abstract class CommentList extends ArrayList<Comment> {
     private FirebaseAPI firebaseAPI;
+    private String statusId;
 
-    public StatusList() {
+    public CommentList(String statusId) {
         super();
         this.firebaseAPI = new FirebaseAPI();
+        this.statusId = statusId;
         addListener();
     }
 
     public void addListener() {
-        firebaseAPI.getMyRef().child("paragraph-node").child("Status").addChildEventListener(new ChildEventListener() {
+        firebaseAPI.getMyRef().child("paragraph-node/Status/" + statusId + "/commentList").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Status status = dataSnapshot.getValue(Status.class);
-                status.setParagraphId(dataSnapshot.getKey());
-
-//                Log.e("Added: ", status.getParagraphId());
-                add(0,status);
+                Comment comment = dataSnapshot.getValue(Comment.class);
+                comment.setParagraphId(dataSnapshot.getKey());
+//                Log.e("Added: ", comment.getParagraphId());
+                add(0,comment);
                 addedFbUserNotify();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Status status = dataSnapshot.getValue(Status.class);
-                status.setParagraphId(dataSnapshot.getKey());
-
-//                Log.e("Changed: ", status.getParagraphId());
-                for (int i = 0; i < size(); i++) {
-                    if (get(i).getParagraphId().equals(status.getParagraphId())) {
-                        set(i, status);
-                        break;
-                    }
-                }
-                addedFbUserNotify();
+//                Comment comment = dataSnapshot.getValue(Comment.class);
+//                comment.setParagraphId(dataSnapshot.getKey());
+//
+//                for (int i = 0; i < size(); i++) {
+//                    if (get(i).getParagraphId().equals(comment.getParagraphId())) {
+//                        set(i, comment);
+//                        break;
+//                    }
+//                }
+//                addedFbUserNotify();
             }
 
             @Override

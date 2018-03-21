@@ -1,43 +1,54 @@
 package com.example.hongsonpham.firstgreeting.model.entity.text;
 
-import com.example.hongsonpham.firstgreeting.model.entity.user.User;
+import com.example.hongsonpham.firstgreeting.model.entity.user.UserImp;
+import com.google.firebase.database.IgnoreExtraProperties;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by HongSonPham on 3/13/18.
  */
 
+@IgnoreExtraProperties
 public class Status extends ParagraphImp {
-    private ArrayList<Comment> commentList;
-    private ArrayList<User> likedUserList;
+    private Map<String, Comment> commentList;
+    private Map<String, UserImp> likedUserList;
 
-    public Status(User owner, String content, Map<String, String> timestamp) {
-        super(owner, content, timestamp);
-        this.commentList = new ArrayList<>();
-        this.likedUserList = new ArrayList<>();
+    public Status() {
     }
 
-    public Status(User owner, String content, Map<String, String> timestamp, ArrayList<Comment> commentList, ArrayList<User> likedUserList) {
+    public Status(UserImp owner, String content, Object timestamp) {
+        super(owner, content, timestamp);
+        this.commentList = new HashMap<>();
+        this.likedUserList = new HashMap<>();
+    }
+
+    public Status(UserImp owner, String content, Object timestamp, Map<String, Comment> commentList, Map<String, UserImp> likedUserList) {
         super(owner, content, timestamp);
         this.commentList = commentList;
         this.likedUserList = likedUserList;
     }
 
-    public ArrayList<Comment> getCommentList() {
+    public Status(String userId, String userName, String userAvatar, String content, Object timestamp, Map<String, Comment> commentList, Map<String, UserImp> likedUserList) {
+        super(userId, userName, userAvatar, content, timestamp);
+        this.commentList = commentList;
+        this.likedUserList = likedUserList;
+    }
+
+    public Map<String, Comment> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(ArrayList<Comment> commentList) {
+    public void setCommentList(Map<String, Comment> commentList) {
         this.commentList = commentList;
     }
 
-    public ArrayList<User> getLikedUserList() {
+    public Map<String, UserImp> getLikedUserList() {
         return likedUserList;
     }
 
-    public void setLikedUserList(ArrayList<User> likedUserList) {
+    public void setLikedUserList(Map<String, UserImp> likedUserList) {
         this.likedUserList = likedUserList;
     }
 

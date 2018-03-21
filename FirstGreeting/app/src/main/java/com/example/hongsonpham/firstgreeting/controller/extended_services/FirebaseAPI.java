@@ -1,5 +1,7 @@
 package com.example.hongsonpham.firstgreeting.controller.extended_services;
 
+import android.util.Log;
+
 import com.example.hongsonpham.firstgreeting.model.entity.text.Comment;
 import com.example.hongsonpham.firstgreeting.model.entity.text.Paragraph;
 import com.example.hongsonpham.firstgreeting.model.entity.text.Status;
@@ -14,7 +16,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by HongSonPham on 3/14/18.
@@ -33,10 +36,10 @@ public class FirebaseAPI {
 
 
     public void pushFbUser(final FbUser user) {
-        myRef.child("user-node").child("FbUser").child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("user-node/FbUser/" + user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                myRef.child("user-node").child("FbUser").child(user.getUserId()).setValue(user);
+                myRef.child("user-node/FbUser/" + user.getUserId()).setValue(user);
             }
 
             @Override
@@ -46,14 +49,31 @@ public class FirebaseAPI {
         });
     }
 
+    public FbUser pullFbUser(String fbId) {
+        final FbUser[] user = {new FbUser()};
+        myRef.child("user-node/FbUser/" + fbId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                user[0] = dataSnapshot.getValue(FbUser.class);
+                Log.e("Test user: ", user[0].toString());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return user[0];
+    }
+
     public void pushCaller(final Caller user) {
-        myRef.child("user-node").child("Caller").child(user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("user-node/Caller/" + user.getUserId()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
 
                 } else {
-                    myRef.child("user-node").child("Caller").child(user.getUserId()).setValue(user);
+                    myRef.child("user-node/Caller/" + user.getUserId()).setValue(user);
                 }
             }
 
@@ -70,11 +90,10 @@ public class FirebaseAPI {
     }
 
     public void pushStatus(final Status status) {
-        myRef.child("paragraph-node").child("Status").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("paragraph-node/Status").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                long statusCount = dataSnapshot.getChildrenCount();
-                myRef.child("paragraph-node").child("Status").child(Long.toString(statusCount)).setValue(status);
+                myRef.child("paragraph-node/Status").push().setValue(status);
             }
 
             @Override
@@ -85,13 +104,28 @@ public class FirebaseAPI {
     }
 
     public void pushComment(final String statusId, final Comment comment) {
-        myRef.child("paragraph-node").child("Status").child(statusId).child("commentList")
+        myRef.child("paragraph-node/Status/" + statusId).child("commentList")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        myRef.child("paragraph-node/Status/" + statusId + "/commentList").push().setValue(comment);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+    }
+
+    public void pushLike(final String statusId, final User user) {
+        myRef.child("paragraph-node/Status/" + statusId + "/likedUserList")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         long commentCount = dataSnapshot.getChildrenCount();
-                        myRef.child("paragraph-node").child("Status").child(statusId).child("commentList")
-                                .child(Long.toString(commentCount)).setValue(comment);
+                        myRef.child("paragraph-node/Status/" + statusId + "/likedUserList").push()
+                                .setValue(user);
                     }
 
                     @Override
@@ -102,22 +136,26 @@ public class FirebaseAPI {
     }
 
     public void demo() {
-        User user = new UserImp("0012", "Pham Hong Son", "link");
+        UserImp user = new UserImp("0012", "Pham Hong Son", "link");
 //        User fbUser = new FbUser(user, "20/07/1997", "hongsongp97@gmail.com", "Male");
-        User caller = new Caller(user, "JS");
+//        User caller = new Caller(user, "JS");
 
 
 //        myRef.child("user-node").child("FbUser").child(fbUser.getUserId()).setValue(fbUser);
-        myRef.child("user-node").child("Caller").child(caller.getUserId()).setValue(caller);
+//        myRef.child("user-node").child("Caller").child(caller.getUserId()).setValue(caller);
 
         Paragraph aComment = new Comment(user, "ngonngon", ServerValue.TIMESTAMP);
-        ArrayList<Comment> commentList = new ArrayList<>();
-        commentList.add((Comment) aComment);
-        Paragraph aStatus = new Status(user, "This's a status", ServerValue.TIMESTAMP, commentList, new ArrayList<User>());
 
-        ArrayList<Status> statusList = new ArrayList<>();
-        statusList.add((Status) aStatus);
-//        this.postStatus((Status) aStatus);
-        this.pushComment("1", (Comment) aComment);
+        Map<String, Comment> commentList = new HashMap<>();
+        commentList.put("CN0", (Comment) aComment);
+
+        Map<String, UserImp> likedList = new HashMap<>();
+        likedList.put("LN0", (UserImp) user);
+
+        Paragraph status = new Status((UserImp) user, "This's a status", ServerValue.TIMESTAMP, commentList, likedList);
+//        Log.e("Test: ", status.toString());
+
+//        this.pushStatus((Status) status);
+//        this.pushComment("1", (Comment) aComment);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.hongsonpham.firstgreeting.model.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,28 +9,44 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.hongsonpham.firstgreeting.R;
+import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
+import com.example.hongsonpham.firstgreeting.controller.extended_services.FirebaseAPI;
 import com.example.hongsonpham.firstgreeting.controller.newsfeed.NewsfeedTab;
+import com.example.hongsonpham.firstgreeting.controller.newsfeed.StatusDetailActivity;
+import com.example.hongsonpham.firstgreeting.model.entity.text.Comment;
 import com.example.hongsonpham.firstgreeting.model.entity.text.Status;
+import com.example.hongsonpham.firstgreeting.model.entity.text.StatusList;
+import com.example.hongsonpham.firstgreeting.model.entity.user.FbUser;
+import com.example.hongsonpham.firstgreeting.model.entity.user.User;
+import com.example.hongsonpham.firstgreeting.model.entity.user.UserImp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by HongSonPham on 3/19/18.
  */
 
-public class StatusListAdapter extends BaseAdapter{
+public class StatusListAdapter extends BaseAdapter {
     private NewsfeedTab parent;
     private Context myContext;
     private int myLayout;
-    private ArrayList<Status> statusList;
+    private StatusList statusList;
+    private FirebaseAPI firebaseAPI;
+    private Map<String, Boolean> isLiked;
 
-    public StatusListAdapter(NewsfeedTab parent, Context myContext, int myLayout, ArrayList<Status> statusList) {
+    public StatusListAdapter(NewsfeedTab parent, Context myContext, int myLayout, StatusList statusList) {
         this.parent = parent;
         this.myContext = myContext;
         this.myLayout = myLayout;
         this.statusList = statusList;
+        this.firebaseAPI = new FirebaseAPI();
+        this.isLiked = new HashMap<>();
     }
 
     @Override
@@ -59,79 +76,78 @@ public class StatusListAdapter extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup viewGroup) {
-        final StatusListAdapter.ViewHolder holder = new StatusListAdapter.ViewHolder();
+        ViewHolder holder = new ViewHolder();
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(myLayout, null);
+
         holder.imgUserAvatar = (ImageView) rowView.findViewById(R.id.imgUserAvatar);
         holder.tvUserName = (TextView) rowView.findViewById(R.id.tvUserName);
         holder.tvStatusContent = (TextView) rowView.findViewById(R.id.tvStatusContent);
         holder.tvLikedNumber = (TextView) rowView.findViewById(R.id.tvLikedNumber);
-        holder.tvCommentedNumber = (TextView) rowView.findViewById(R.id.tvLikedNumber);
+        holder.tvCommentedNumber = (TextView) rowView.findViewById(R.id.tvCommentedNumber);
         holder.btnLike = (ImageView) rowView.findViewById(R.id.btnLike);
         holder.btnComment = (ImageView) rowView.findViewById(R.id.btnComment);
         rowView.setTag(holder);
 
         //Set value
-        Status status = statusList.get(position);
+        final Status status = statusList.get(position);
         holder.tvUserName.setText(status.getOwner().getUserName());
         holder.tvStatusContent.setText(status.getContent());
+        if (status.getLikedUserList() == null) {
+            status.setLikedUserList(new HashMap<String, UserImp>());
+        }
+        if (status.getCommentList() == null) {
+            status.setCommentList(new HashMap<String, Comment>());
+        }
         holder.tvLikedNumber.setText("Like: (" + status.getLikedUserList().size() + ")");
-        holder.tvCommentedNumber.setText("Like: (" + status.getCommentList().size() + ")");
-        Glide.with(myContext).load(status.getOwner().getUserAvatar()).into(holder.imgUserAvatar);
+        holder.tvCommentedNumber.setText("Comment: (" + status.getCommentList().size() + ")");
+        Picasso.with(myContext).load(status.getOwner().getUserAvatar()).into(holder.imgUserAvatar);
 
-//        final int size = statusList.size() - 1;
-//        final Status userStatus = statusList.get(position);
-//        holder.tvUserName.setText(userStatus.getOwnerName());
-//        holder.tvStatusContent.setText(statusList.get(position).getContentOfStatus());
-//        boolean liked = false;
-//        if (userStatus.likedUserId == null) {
-//            userStatus.likedUserId = new ArrayList<String>();
-//        }
-//        for (String liker : userStatus.likedUserId) {
-//            if (liker.equals(parent.getFbId())) {
-//                liked = true;
-//                break;
-//            }
-//        }
-//        if (liked) {
-//            holder.btnLike.setBackgroundResource(R.drawable.liked);
-//        } else {
-//            holder.btnLike.setBackgroundResource(like);
-//        }
-//
-//        Picasso.with(myContext).load(userStatus.getOwnerAvatar()).into(holder.imgUserAvatar);
-//        holder.tvLikedNumber.setText("Like: (" + userStatus.getLikedNumber() + ")");
-//        holder.tvCommentedNumber.setText("Comment: (" + userStatus.getCommentedNumber() + ")");
-//
-//        holder.btnComment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                parent.startIntent(position);
-//            }
-//        });
-//
-//
-//        holder.btnLike.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                boolean liked = false;
-//                for (String liker : userStatus.likedUserId) {
-//                    if (liker.equals(parent.getFbId())) {
-//                        liked = true;
-//                        break;
-//                    }
-//                }
-//                if (!liked) {
-//                    userStatus.likedUserId.add(parent.getFbId());
-//                    Log.e("Data: ", userStatus.toString());
-//                    userStatus.setLikedNumber(userStatus.likedUserId.size());
-//                    mDatabase.child("Status").child(Integer.toString(size - position)).child("likedNumber").setValue(userStatus.getLikedNumber());
-//                    mDatabase.child("Status").child(Integer.toString(size - position)).child("likedUsers").child(Integer.toString(userStatus.getLikedNumber() - 1)).setValue(par.getFbId());
-//                    holder.tvLikedNumber.setText("Like: (" + Integer.toString(userStatus.getLikedNumber()) + ")");
-//                    holder.btnLike.setBackgroundResource(R.drawable.liked);
-//                }
-//            }
-//        });
+        isLiked.put(status.getParagraphId(), false);
+        for (String key : status.getLikedUserList().keySet()) {
+            if (status.getLikedUserList().get(key).getUserId().equals(FacebookAPI.fbId)) {
+                isLiked.put(status.getParagraphId(), true);
+                break;
+            }
+        }
+
+        if (isLiked.get(status.getParagraphId()) == true) {
+            holder.btnLike.setBackgroundResource(R.drawable.shape_liked);
+        } else {
+            holder.btnLike.setBackgroundResource(R.drawable.shape_like);
+        }
+
+        holder.btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                firebaseAPI.getMyRef().child("user-node/FbUser/" + FacebookAPI.fbId)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (isLiked.get(status.getParagraphId())) return;
+                                User fbUser = dataSnapshot.getValue(FbUser.class);
+                                User user = new UserImp(fbUser.getUserId(), fbUser.getUserName(), fbUser.getUserAvatar());
+                                firebaseAPI.pushLike(status.getParagraphId(), user);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+            }
+        });
+
+        rowView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(parent.getActivity(), StatusDetailActivity.class);
+                intent.putExtra("Status ID", status.getParagraphId());
+                parent.startActivity(intent);
+            }
+        });
 
         return rowView;
     }

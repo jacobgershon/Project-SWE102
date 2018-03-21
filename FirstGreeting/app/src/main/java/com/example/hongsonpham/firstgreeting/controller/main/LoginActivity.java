@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         };
-        btnLoginFacebook = findViewById(R.id.login_button);
+        btnLoginFacebook = (LoginButton) findViewById(R.id.login_button);
         btnLoginFacebook.setReadPermissions(Arrays.asList("email", "public_profile", "user_birthday"));
 
         facebookAPI.processLogin();
