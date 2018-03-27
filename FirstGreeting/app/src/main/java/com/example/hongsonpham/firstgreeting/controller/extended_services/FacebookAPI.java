@@ -20,14 +20,18 @@ import org.json.JSONObject;
  * Created by HongSonPham on 3/14/18.
  */
 
-public abstract class FacebookAPI {
+public class FacebookAPI {
     private CallbackManager callbackManager;
-    FirebaseAPI firebaseAPI;
-    public static String fbId;
+    private FirebaseAPI firebaseAPI;
+    private String fbId;
 
     public FacebookAPI() {
         callbackManager = CallbackManager.Factory.create();
         firebaseAPI = new FirebaseAPI();
+    }
+
+    public String getFbId() {
+        return fbId;
     }
 
     public CallbackManager getCallbackManager() {
@@ -38,8 +42,7 @@ public abstract class FacebookAPI {
         return com.facebook.AccessToken.getCurrentAccessToken() != null;
     }
 
-    public void loadImformation() {
-
+    public void loadInformation() {
         GraphRequest request = GraphRequest.newMeRequest(
                 AccessToken.getCurrentAccessToken(),
                 new GraphRequest.GraphJSONObjectCallback() {
@@ -112,7 +115,7 @@ public abstract class FacebookAPI {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         Log.e("test: ", "Logined");
-                        loadImformation();
+                        loadInformation();
                     }
 
                     @Override
@@ -128,5 +131,5 @@ public abstract class FacebookAPI {
                 });
     }
 
-    public abstract void moveToHome();
+    public void moveToHome(){};
 }

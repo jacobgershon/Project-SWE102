@@ -19,6 +19,7 @@ import com.example.hongsonpham.firstgreeting.model.adapter.SectionsPagerAdapter;
 public class HomeActivity extends AppCompatActivity {
 
     TabLayout tabLayout;
+    String fbId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +27,25 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        fbId = getFbId();
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fbId);
         setSupportActionBar(toolbar);
 
         ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
 
+
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+
         createTabIcons();
+    }
+
+    private String getFbId() {
+        Intent intent = getIntent();
+        return intent.getStringExtra("fbId");
     }
 
     private void createTabIcons() {
@@ -56,7 +65,6 @@ public class HomeActivity extends AppCompatActivity {
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-//        finish();
     }
 
 }

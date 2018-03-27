@@ -8,16 +8,21 @@ import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 
 /**
- * Created by HongSonPham on 3/16/18.
+ * Created by HongSonPham on 3/26/18.
  */
 
-public abstract class FbUserList extends ArrayList<FbUser> {
+public abstract class UserList extends ArrayList<User> {
 
-    FirebaseAPI firebaseAPI;
+    private FirebaseAPI firebaseAPI;
+    private String fbId;
 
-    public FbUserList() {
+    public UserList() {
+    }
+
+    public UserList(String fbId) {
         super();
         firebaseAPI = new FirebaseAPI();
+        this.fbId = fbId;
         addListener();
     }
 
@@ -25,22 +30,27 @@ public abstract class FbUserList extends ArrayList<FbUser> {
         firebaseAPI.getMyRef().child("user-node").child("FbUser").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                FbUser fbUser = dataSnapshot.getValue(FbUser.class);
-                add(fbUser);
-                addedFbUserNotify();
+                if (!dataSnapshot.getKey().equals(fbId)) {
+                    FbUser fbUser = dataSnapshot.getValue(FbUser.class);
+                    User user = new UserImp(fbUser);
+                    add(user);
+                    addedUserNotify();
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                FbUser fbUser = dataSnapshot.getValue(FbUser.class);
-
-                for (int i = 0; i < size(); i++) {
-                    if (get(i).getUserId().equals(fbUser.getUserId())) {
-                        set(i, fbUser);
-                        break;
+                if (!dataSnapshot.getKey().equals(fbId)) {
+                    FbUser fbUser = dataSnapshot.getValue(FbUser.class);
+                    User user = new UserImp(fbUser);
+                    for (int i = 0; i < size(); i++) {
+                        if (get(i).getUserId().equals(user.getUserId())) {
+                            set(i, user);
+                            break;
+                        }
                     }
+                    addedUserNotify();
                 }
-                addedFbUserNotify();
             }
 
             @Override
@@ -60,5 +70,5 @@ public abstract class FbUserList extends ArrayList<FbUser> {
         });
     }
 
-    public abstract void addedFbUserNotify();
+    public abstract void addedUserNotify();
 }

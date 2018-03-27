@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.hongsonpham.firstgreeting.R;
-import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FirebaseAPI;
 import com.example.hongsonpham.firstgreeting.model.adapter.StatusListAdapter;
 import com.example.hongsonpham.firstgreeting.model.entity.text.Status;
@@ -38,26 +37,36 @@ public class NewsfeedTab extends Fragment {
     private ListView lvStatusList;
     private StatusListAdapter statusListAdapter;
 
+    private String fbId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_newsfeed, container, false);
-
-        firebaseAPI = new FirebaseAPI();
-
         btnPostStatus = (Button) rootView.findViewById(R.id.btnPostStatus);
         edtStatus = (EditText) rootView.findViewById(R.id.edtStatus);
         lvStatusList = (ListView) rootView.findViewById(R.id.lvStatusList);
 
+        init();
+        setBtnPostStatusListener();
+
+        return rootView;
+    }
+
+    private void init() {
+        firebaseAPI = new FirebaseAPI();
+        fbId = getArguments().getString("fbId");
         statusList = new StatusList() {
             @Override
             public void addedFbUserNotify() {
                 statusListAdapter.notifyDataSetChanged();
             }
         };
-        statusListAdapter = new StatusListAdapter(this, getContext(), R.layout.row_status, statusList);
+        statusListAdapter = new StatusListAdapter(this, getContext(), R.layout.row_status, statusList, fbId);
         lvStatusList.setAdapter(statusListAdapter);
+    }
 
+    private void setBtnPostStatusListener() {
         btnPostStatus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,24 +74,23 @@ public class NewsfeedTab extends Fragment {
                 if (statusContent.equals("")) {
                     return;
                 }
-                firebaseAPI.getMyRef().child("user-node/FbUser/" + FacebookAPI.fbId)
+                firebaseAPI.getMyRef().child("user-node/FbUser/" + fbId)
                         .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        User fbUser = dataSnapshot.getValue(FbUser.class);
-                        User owner = new UserImp(fbUser.getUserId(), fbUser.getUserName(), fbUser.getUserAvatar());
-                        Status status = new Status((UserImp) owner, statusContent, ServerValue.TIMESTAMP);
-                        firebaseAPI.pushStatus(status);
-                        edtStatus.setText("");
-                    }
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                User fbUser = dataSnapshot.getValue(FbUser.class);
+                                User owner = new UserImp(fbUser.getUserId(), fbUser.getUserName(), fbUser.getUserAvatar());
+                                Status status = new Status((UserImp) owner, statusContent, ServerValue.TIMESTAMP);
+                                firebaseAPI.pushStatus(status);
+                                edtStatus.setText("");
+                            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                            }
+                        });
             }
         });
-        return rootView;
     }
 }

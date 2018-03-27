@@ -11,7 +11,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.hongsonpham.firstgreeting.R;
-import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FirebaseAPI;
 import com.example.hongsonpham.firstgreeting.model.adapter.CommentListAdapter;
 import com.example.hongsonpham.firstgreeting.model.entity.text.Comment;
@@ -47,6 +46,8 @@ public class StatusDetailActivity extends AppCompatActivity {
     private ListView lvCommentList;
     private CommentListAdapter commentListAdapter;
 
+    private String fbId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +62,8 @@ public class StatusDetailActivity extends AppCompatActivity {
         edtComment = (EditText) findViewById(R.id.edtComment);
         btnCommentSubmit = (ImageButton) findViewById(R.id.btnCommentSubmit);
         lvCommentList = (ListView) findViewById(R.id.lvCommentList);
+
+        fbId = getIntent().getStringExtra("fbId");
 
         commentList = new CommentList(statusId) {
             @Override
@@ -101,7 +104,7 @@ public class StatusDetailActivity extends AppCompatActivity {
                 if (commentContent.equals("")) {
                     return;
                 }
-                firebaseAPI.getMyRef().child("user-node/FbUser/" + FacebookAPI.fbId)
+                firebaseAPI.getMyRef().child("user-node/FbUser/" + fbId)
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {

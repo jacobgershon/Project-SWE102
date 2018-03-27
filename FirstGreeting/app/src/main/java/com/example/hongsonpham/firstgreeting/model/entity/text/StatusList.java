@@ -28,7 +28,6 @@ public abstract class StatusList extends ArrayList<Status> {
                 Status status = dataSnapshot.getValue(Status.class);
                 status.setParagraphId(dataSnapshot.getKey());
 
-//                Log.e("Added: ", status.getParagraphId());
                 add(0,status);
                 addedFbUserNotify();
             }
@@ -38,7 +37,6 @@ public abstract class StatusList extends ArrayList<Status> {
                 Status status = dataSnapshot.getValue(Status.class);
                 status.setParagraphId(dataSnapshot.getKey());
 
-//                Log.e("Changed: ", status.getParagraphId());
                 for (int i = 0; i < size(); i++) {
                     if (get(i).getParagraphId().equals(status.getParagraphId())) {
                         set(i, status);

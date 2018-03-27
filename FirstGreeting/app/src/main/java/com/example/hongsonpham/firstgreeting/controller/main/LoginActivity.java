@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void moveToHome() {
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                intent.putExtra("fbId", facebookAPI.getFbId());
                 startActivity(intent);
             }
         };

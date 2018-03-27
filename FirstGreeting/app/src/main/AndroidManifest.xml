@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.hongsonpham.firstgreeting">
 
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,29 +19,20 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".controller.main.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".controller.main.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".controller.main.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".controller.main.HomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".controller.newsfeed.StatusDetailActivity" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <activity android:name=".controller.newsfeed.StatusDetailActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity
+            android:name=".controller.message.ConversationActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -50,6 +42,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -64,7 +57,5 @@
         </activity>
 
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

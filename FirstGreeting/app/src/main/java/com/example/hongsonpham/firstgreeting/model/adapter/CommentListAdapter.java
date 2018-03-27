@@ -61,7 +61,6 @@ public class CommentListAdapter extends BaseAdapter {
         view.setTag(holder);
 
         Comment comment = commentList.get(position);
-//        Log.e("TEST DATA " + position + ": ", comment.toString() + "");
         holder.tvComment.setText(comment.getContent());
         holder.tvName.setText(comment.getOwner().getUserName());
         Picasso.with(myContext).load(comment.getOwner().getUserAvatar()).into(holder.imgAvatar);

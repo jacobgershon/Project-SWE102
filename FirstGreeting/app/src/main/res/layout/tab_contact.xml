@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="#f1f1f1"
+        android:paddingBottom="4dp">
+
+        <SearchView
+            android:id="@+id/svSearch"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:queryHint="Search..."></SearchView>
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lvContactList"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="#f1f1f1"></ListView>
+
+</LinearLayout>

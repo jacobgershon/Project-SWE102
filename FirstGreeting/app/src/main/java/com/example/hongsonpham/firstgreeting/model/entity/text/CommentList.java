@@ -28,23 +28,22 @@ public abstract class CommentList extends ArrayList<Comment> {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Comment comment = dataSnapshot.getValue(Comment.class);
                 comment.setParagraphId(dataSnapshot.getKey());
-//                Log.e("Added: ", comment.getParagraphId());
                 add(0,comment);
                 addedFbUserNotify();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                Comment comment = dataSnapshot.getValue(Comment.class);
-//                comment.setParagraphId(dataSnapshot.getKey());
-//
-//                for (int i = 0; i < size(); i++) {
-//                    if (get(i).getParagraphId().equals(comment.getParagraphId())) {
-//                        set(i, comment);
-//                        break;
-//                    }
-//                }
-//                addedFbUserNotify();
+                Comment comment = dataSnapshot.getValue(Comment.class);
+                comment.setParagraphId(dataSnapshot.getKey());
+
+                for (int i = 0; i < size(); i++) {
+                    if (get(i).getParagraphId().equals(comment.getParagraphId())) {
+                        set(i, comment);
+                        break;
+                    }
+                }
+                addedFbUserNotify();
             }
 
             @Override

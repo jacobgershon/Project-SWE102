@@ -3,6 +3,7 @@ package com.example.hongsonpham.firstgreeting.controller.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.example.hongsonpham.firstgreeting.R;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
@@ -21,7 +22,11 @@ public class MainActivity extends AppCompatActivity {
         firebaseAPI = new FirebaseAPI();
         facebookAPI = new FacebookAPI() {
             @Override
-            public void moveToHome() {};
+            public void moveToHome() {
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                intent.putExtra("fbId", facebookAPI.getFbId());
+                startActivity(intent);
+            };
         };
 
         firebaseAPI.demo();
@@ -32,9 +37,7 @@ public class MainActivity extends AppCompatActivity {
     public void loginToApp() {
 //        LoginManager.getInstance().logOut();
         if (facebookAPI.isLoginAlready()) {
-            facebookAPI.loadImformation();
-            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-            startActivity(intent);
+            facebookAPI.loadInformation();
         } else {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);

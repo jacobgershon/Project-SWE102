@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hongsonpham.firstgreeting.R;
-import com.example.hongsonpham.firstgreeting.controller.extended_services.FacebookAPI;
 import com.example.hongsonpham.firstgreeting.controller.extended_services.FirebaseAPI;
 import com.example.hongsonpham.firstgreeting.controller.newsfeed.NewsfeedTab;
 import com.example.hongsonpham.firstgreeting.controller.newsfeed.StatusDetailActivity;
@@ -37,16 +36,18 @@ public class StatusListAdapter extends BaseAdapter {
     private Context myContext;
     private int myLayout;
     private StatusList statusList;
-    private FirebaseAPI firebaseAPI;
     private Map<String, Boolean> isLiked;
+    private FirebaseAPI firebaseAPI;
+    private String fbId;
 
-    public StatusListAdapter(NewsfeedTab parent, Context myContext, int myLayout, StatusList statusList) {
+    public StatusListAdapter(NewsfeedTab parent, Context myContext, int myLayout, StatusList statusList, String fbId) {
         this.parent = parent;
         this.myContext = myContext;
         this.myLayout = myLayout;
         this.statusList = statusList;
         this.firebaseAPI = new FirebaseAPI();
         this.isLiked = new HashMap<>();
+        this.fbId = fbId;
     }
 
     @Override
@@ -105,7 +106,7 @@ public class StatusListAdapter extends BaseAdapter {
 
         isLiked.put(status.getParagraphId(), false);
         for (String key : status.getLikedUserList().keySet()) {
-            if (status.getLikedUserList().get(key).getUserId().equals(FacebookAPI.fbId)) {
+            if (status.getLikedUserList().get(key).getUserId().equals(fbId)) {
                 isLiked.put(status.getParagraphId(), true);
                 break;
             }
@@ -121,7 +122,7 @@ public class StatusListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
-                firebaseAPI.getMyRef().child("user-node/FbUser/" + FacebookAPI.fbId)
+                firebaseAPI.getMyRef().child("user-node/FbUser/" + fbId)
                         .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -145,6 +146,7 @@ public class StatusListAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(parent.getActivity(), StatusDetailActivity.class);
                 intent.putExtra("Status ID", status.getParagraphId());
+                intent.putExtra("fbId", fbId);
                 parent.startActivity(intent);
             }
         });
