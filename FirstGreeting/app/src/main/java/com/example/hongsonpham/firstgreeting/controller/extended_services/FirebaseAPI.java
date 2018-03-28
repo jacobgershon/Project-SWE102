@@ -1,7 +1,5 @@
 package com.example.hongsonpham.firstgreeting.controller.extended_services;
 
-import android.util.Log;
-
 import com.example.hongsonpham.firstgreeting.model.entity.text.Comment;
 import com.example.hongsonpham.firstgreeting.model.entity.text.Message;
 import com.example.hongsonpham.firstgreeting.model.entity.text.Paragraph;
@@ -46,22 +44,6 @@ public class FirebaseAPI {
 
             }
         });
-    }
-
-    public FbUser pullFbUser(String fbId) {
-        final FbUser[] user = {new FbUser()};
-        myRef.child("user-node/FbUser/" + fbId).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user[0] = dataSnapshot.getValue(FbUser.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return user[0];
     }
 
     public void pushCaller(final Caller user) {
