@@ -8,34 +8,55 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 public class Caller extends UserImp {
-    private String clubId;
+    private String clubName;
+    private String state;
+    private String role;
 
-    public Caller(String clubId) {
-        this.clubId = clubId;
+    public Caller() {
     }
 
-    public Caller(String userId, String userName, String userAvatar, String clubId) {
+    public Caller(String userId, String userName, String userAvatar, String clubName, String state) {
         super(userId, userName, userAvatar);
-        this.clubId = clubId;
+        this.clubName = clubName;
+        this.state = state;
+        this.role = "Newbie";
     }
 
-    public Caller(User user, String clubId) {
+    public Caller(User user, String clubName, String state) {
         super(user);
-        this.clubId = clubId;
+        this.clubName = clubName;
+        this.state = state;
+        this.role = "Newbie";
     }
 
-    public String getClubId() {
-        return clubId;
+    public String getState() {
+        return state;
     }
 
-    public void setClubId(String clubId) {
-        this.clubId = clubId;
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getClubName() {
+        return clubName;
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     @Override
     public String toString() {
         return super.toString() + "\nCaller{" +
-                "clubId='" + clubId + '\'' +
+                "clubName='" + clubName + '\'' +
                 '}';
     }
 }

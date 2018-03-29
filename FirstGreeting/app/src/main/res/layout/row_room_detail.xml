@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:background="@drawable/custom_radius_border_room_detail"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_centerInParent="true"
+        android:weightSum="7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <RelativeLayout
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tvRoomNumber"
+                android:textSize="20sp"
+                android:textColor="#ffffff"
+                android:fontFamily="cursive"
+                android:textStyle="bold"
+                android:text="Room 1"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <ImageView
+                    android:background="@drawable/avatar"
+                    android:id="@+id/imgAvatarUser1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textSize="15sp"
+                        android:textColor="#0a0a0a"
+                        android:id="@+id/tvUser1"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:text="Waiting user 1..."
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <ImageView
+                    android:background="@drawable/avatar"
+                    android:id="@+id/imgAvatarUser2"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textSize="15sp"
+                        android:textColor="#0a0a0a"
+                        android:id="@+id/tvUser2"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:text="Waiting user 2..."
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <ImageView
+                    android:background="@drawable/avatar"
+                    android:id="@+id/imgAvatarUser3"
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textSize="15sp"
+                        android:textColor="#0a0a0a"
+                        android:id="@+id/tvUser3"
+                        android:layout_centerVertical="true"
+                        android:textStyle="bold"
+                        android:text="Waiting user 3..."
+                        android:layout_marginRight="15dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
+

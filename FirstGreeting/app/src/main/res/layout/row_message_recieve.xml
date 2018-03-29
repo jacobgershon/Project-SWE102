@@ -26,6 +26,8 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:paddingTop="8dp"
+        android:textColor="@color/com_facebook_button_text_color"
+        android:background="@drawable/custom_border_message"
         android:text="Pham Hong Son" />
 
     <TextView

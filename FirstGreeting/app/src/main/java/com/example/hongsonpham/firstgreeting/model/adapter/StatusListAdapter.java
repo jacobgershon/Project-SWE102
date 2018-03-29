@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,6 +69,7 @@ public class StatusListAdapter extends BaseAdapter {
     private class ViewHolder {
         ImageView imgUserAvatar;
         TextView tvUserName;
+        TextView tvTime;
         TextView tvStatusContent;
         ImageView btnComment;
         ImageView btnLike;
@@ -83,6 +85,7 @@ public class StatusListAdapter extends BaseAdapter {
 
         holder.imgUserAvatar = (ImageView) rowView.findViewById(R.id.imgUserAvatar);
         holder.tvUserName = (TextView) rowView.findViewById(R.id.tvUserName);
+        holder.tvTime = (TextView) rowView.findViewById(R.id.tvTime);
         holder.tvStatusContent = (TextView) rowView.findViewById(R.id.tvStatusContent);
         holder.tvLikedNumber = (TextView) rowView.findViewById(R.id.tvLikedNumber);
         holder.tvCommentedNumber = (TextView) rowView.findViewById(R.id.tvCommentedNumber);
@@ -93,6 +96,8 @@ public class StatusListAdapter extends BaseAdapter {
         //Set value
         final Status status = statusList.get(position);
         holder.tvUserName.setText(status.getOwner().getUserName());
+        String stringDate = DateFormat.getTimeInstance().format(status.getTimestamp());
+        holder.tvTime.setText(stringDate);
         holder.tvStatusContent.setText(status.getContent());
         if (status.getLikedUserList() == null) {
             status.setLikedUserList(new HashMap<String, UserImp>());

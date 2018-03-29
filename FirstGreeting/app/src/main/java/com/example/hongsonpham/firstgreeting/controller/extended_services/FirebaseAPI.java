@@ -64,11 +64,6 @@ public class FirebaseAPI {
         });
     }
 
-    public void pushACaller(User user) {
-        Caller caller = new Caller(user, "none");
-        pushCaller(caller);
-    }
-
     public void pushStatus(final Status status) {
         myRef.child("paragraph-node/Status").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

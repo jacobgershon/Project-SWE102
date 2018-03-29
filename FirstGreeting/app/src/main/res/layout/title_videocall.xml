@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Button
+        android:id="@+id/btnLeave"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:textColor="#333"
+        android:layout_alignParentLeft="true"
+        android:text="Leave"
+        android:layout_marginLeft="-10dp"
+        android:background="@drawable/custom_radius_border_button"
+        android:visibility="visible" />
+
+    <TextView
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:id="@+id/tvRoomNumber"
+        android:text="Room Number"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+    android:id="@+id/btnRoomInfo"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="15dp"
+    android:background="@android:drawable/ic_menu_view"
+    android:visibility="visible" />
+
+</RelativeLayout>

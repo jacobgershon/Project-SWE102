@@ -47,6 +47,16 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time"
+                    android:paddingLeft="5dp"
+                    android:textColor="#333"
+                    android:textSize="9sp"
+                    android:textStyle="italic" />
+
             </LinearLayout>
         </RelativeLayout>
 
