@@ -1,0 +1,29 @@
+{
+  "name": "servercoding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hongsongp97/serverCoding.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hongsongp97/serverCoding/issues"
+  },
+  "homepage": "https://github.com/hongsongp97/serverCoding#readme",
+  "dependencies": {
+    "express": "^4.15.4",
+    "opentok": "^2.6.0",
+    "socket.io": "^2.0.3"
+  },
+  "engines": {
+  "node": "6.11.2",
+  "npm": "3.10.10"
+}
+}

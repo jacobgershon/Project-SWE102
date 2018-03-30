@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="./node_modules/socket.io-client/dist/socket.io.js"></script>
+	</head>
+<body>
+	<h1>Press "Start Call" Button to start call randomly.</h1>
+	<input type="button" value="Start Call" onclick="doEmit()" />
+
+	<script type="text/javascript">
+		var socket = io.connect('https://firstgreeting.herokuapp.com');
+
+		var doEmit = function () {
+			socket.emit('start-call', "you clicked the button");
+		};
+	</script>
+	 
+</body>
+</html>

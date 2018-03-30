@@ -94,8 +94,9 @@ public class ContactListAdapter extends BaseAdapter {
                 holder.tvUnreadMessageCount.setVisibility(View.VISIBLE);
             }
         }
-
-        Picasso.with(myContext).load(user.getUserAvatar()).into(holder.imgUserAvatar);
+        if (!user.getUserAvatar().isEmpty()) {
+            Picasso.with(myContext).load(user.getUserAvatar()).into(holder.imgUserAvatar);
+        }
 
         return view;
     }
